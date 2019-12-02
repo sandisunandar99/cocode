@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+   <!-- Meta -->
+    <meta name="description" content="CO'Code Aplication Development">
+    <meta name="author" content="sandisunandar">
+
+
+    <title>Co'Code Project</title>    
+  
+
+    @include('include/style')
+
+  </head>
+  <body class="az-body">
+
+    @if(flashMessage('error'))
+      <div class="alert alert-danger mg-b-0" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <strong>Uppss!</strong> {{ flashMessage('error') }}
+      </div>
+    @endif  
+
+    <div class="az-signin-wrapper">
+      <div class="az-card-signin">
+        <div class="az-signin-header">
+          {{--  <h2><b>My</b>Project</h2>  --}}
+          <img src="img/co-code.png" alt="logo" width="275px"><br><br>
+          <h5>Please sign in..</h5>
+
+          <form action="/login" method="POST">
+              {{ csrfField() }}
+
+              <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" value="{{old('username','')}}" required=true>
+            </div><!-- form-group -->
+            <div class="form-group">
+              <label>Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" value="{{old('password','')}}" required=ture>
+            </div><!-- form-group -->
+            <button class="btn btn-az-primary btn-block">Sign In</button>
+          </form>
+        </div><!-- az-signin-header -->
+        <div class="az-signin-footer">
+          <!--<p><a href="">Forgot password?</a></p>-->
+          <!--<p>Don't have an account? <a href="page-signup.html">Create an Account</a></p>-->
+          @include('include/footer')
+        </div>
+        <!-- az-signin-footer -->
+      </div><!-- az-card-signin -->
+    </div><!-- az-signin-wrapper -->
+
+    @include('include/script')
+    <script>
+      $(function(){
+        'use strict'
+
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<div class="az-header-left">
+    <a href="/" class="az-logo"><img src="{{ assetsUrl('img/Header - Co Code.png') }}" alt="header" width="160px" height="50px"></a>
+</div>
+<!-- az-header-left -->
+
+
+<div class="az-header-menu">
+  <ul class="nav">
+    <li class="nav-item active show">
+      <a href="" class="nav-link with-sub"><i class="typcn typcn-chart-area-outline"></i>Dashboard</a>
+      <div class="az-menu-sub">
+        <nav class="nav">
+          <a href="dashboard-one.html" class="nav-link active">Web Analytics</a>
+          <a href="dashboard-two.html" class="nav-link">Sales Monitoring</a>
+        </nav>
+      </div>
+      <!-- az-menu-sub -->
+    </li>
+    <li class="nav-item">
+      <a href="" class="nav-link with-sub"><i class="typcn typcn-folder"></i> Tools</a>
+      <nav class="az-menu-sub">
+        <a href="app-mail.html" class="nav-link">Mailbox</a>
+        <a href="app-chat.html" class="nav-link">Chat</a>
+      </nav>
+    </li>
+    <li class="nav-item">
+      <a href="" class="nav-link"><i class="typcn typcn-directions"></i>Test</a>
+    </li>
+    <!--<li class="nav-item">
+      <a href="" class="nav-link with-sub"><i class="typcn typcn-book"></i> Components</a>
+      <div class="az-menu-sub az-menu-sub-mega">
+        <div class="container">
+          <div>
+            <nav class="nav">
+              <span>UI Elements</span>
+              <a href="elem-accordion.html" class="nav-link">Accordion</a>
+              <a href="elem-alerts.html" class="nav-link">Alerts</a>
+              <a href="elem-avatar.html" class="nav-link">Avatar</a>
+              <a href="elem-badge.html" class="nav-link">Badge</a>
+              <a href="elem-breadcrumbs.html" class="nav-link">Breadcrumbs</a>
+              <a href="elem-buttons.html" class="nav-link">Buttons</a>
+              <a href="elem-cards.html" class="nav-link">Cards</a>
+              <a href="elem-carousel.html" class="nav-link">Carousel</a>
+            </nav>
+            <nav class="nav">
+              <a href="elem-collapse.html" class="nav-link">Collapse</a>
+              <a href="elem-dropdown.html" class="nav-link">Dropdown</a>
+              <a href="elem-icons.html" class="nav-link">Icons</a>
+              <a href="elem-images.html" class="nav-link">Images</a>
+              <a href="elem-list-group.html" class="nav-link">List Group</a>
+              <a href="elem-media-object.html" class="nav-link">Media Object</a>
+              <a href="elem-modals.html" class="nav-link">Modals</a>
+              <a href="elem-navigation.html" class="nav-link">Navigation</a>
+            </nav>
+            <nav class="nav">
+              <a href="elem-pagination.html" class="nav-link">Pagination</a>
+              <a href="elem-popover.html" class="nav-link">Popover</a>
+              <a href="elem-progress.html" class="nav-link">Progress</a>
+              <a href="elem-spinners.html" class="nav-link">Spinners</a>
+              <a href="elem-toast.html" class="nav-link">Toast</a>
+              <a href="elem-tooltip.html" class="nav-link">Tooltip</a>
+            </nav>
+          </div>
+          <div>
+            <nav class="nav">
+              <span>Forms</span>
+              <a href="form-elements.html" class="nav-link">Form Elements</a>
+              <a href="form-layouts.html" class="nav-link">Form Layouts</a>
+              <a href="form-validation.html" class="nav-link">Form Validation</a>
+              <a href="form-wizards.html" class="nav-link">Form Wizards</a>
+              <a href="form-editor.html" class="nav-link">WYSIWYG Editor</a>
+            </nav>
+          </div>
+          <div>
+            <nav class="nav">
+              <span>Charts</span>
+              <a href="chart-morris.html" class="nav-link">Morris Charts</a>
+              <a href="chart-flot.html" class="nav-link">Flot Charts</a>
+              <a href="chart-chartjs.html" class="nav-link">ChartJS</a>
+              <a href="chart-sparkline.html" class="nav-link">Sparkline</a>
+              <a href="chart-peity.html" class="nav-link">Peity</a>
+            </nav>
+          </div>
+          <div>
+            <nav class="nav">
+              <span>Maps</span>
+              <a href="map-google.html" class="nav-link">Google Maps</a>
+              <a href="map-leaflet.html" class="nav-link">Leaflet</a>
+              <a href="map-vector.html" class="nav-link">Vector Maps</a>
+              <span>Tables</span>
+              <a href="table-basic.html" class="nav-link">Basic Tables</a>
+              <a href="table-data.html" class="nav-link">Data Tables</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </li>-->
+  </ul>
+</div><!-- az-header-menu -->
+
+
+<div class="az-header-right">
+  <div class="dropdown az-profile-menu">
+    <a href="" class="az-img-user"><img src="https://via.placeholder.com/500" alt="avatar" id="user_avatar"></a>
+    <div class="dropdown-menu">
+      <div class="az-dropdown-header d-sm-none">
+        <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+      </div>
+      <div class="az-header-profile">
+        <div class="az-img-user">
+          <img src="https://via.placeholder.com/500" alt="avatar" id="user_avatar2">
+        </div><!-- az-img-user -->
+        <h6 id="user_uname">username</h6>
+        <span id="user_roles">user_roles</span>
+      </div><!-- az-header-profile -->
+
+      <!--<a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+      <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+      <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>-->
+      @loggedIn
+        @is('administrator')
+           <a href="/admin" class="dropdown-item"><i class="typcn typcn-cog-outline"></i>Administrator</a>
+        @endis
+     @endloggedIn
+      <a href="/logout" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Sign Out</a>
+    </div><!-- dropdown-menu -->
+  </div>
+</div><!-- az-header-right -->
+

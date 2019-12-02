@@ -1,0 +1,651 @@
+@layout('master')
+
+@section('title')
+    <title>Administrator : Co'Code Project</title>
+@endsection
+
+
+@section('content')
+
+
+<style>
+  .row-xs{
+    margin-right: -130px !important;
+  }
+  .th-action{
+    width: 150px !important;
+  }
+  .badge.badge-m{
+    font-size: 11px !important;
+  }
+
+  .hidden{
+    display: none;
+  }
+
+</style>
+
+
+@if(flashMessage('delete'))
+  <div class="alert alert-success mg-b-0" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    <strong>Ok!</strong> {{ flashMessage('delete') }}
+  </div>
+@endif
+
+
+@if(flashMessage('error'))
+  <div class="alert alert-danger mg-b-0" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <strong>Uppss!</strong> {{ flashMessage('error') }}
+  </div>
+@endif
+
+@if(flashMessage('success'))
+  <div class="alert alert-success mg-b-0" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    <strong>Ok!</strong> {{ flashMessage('success') }}
+  </div>
+@endif
+
+
+
+<div class="col-lg-12 mg-t-20">
+  <div class="row row-sm">
+    <div class="col-sm-12">
+      <div class="card card-dashboard-twenty">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="az-content-label mg-b-5">List User</div>
+              <p class="mg-b-20">Datatables list manage users and add new user</p>
+            </div>
+            <div class="col-sm-5">
+              <div class="row row-xs">
+                <div class="col-sm-5 col-md-3"><button class="btn btn-danger btn-with-icon btn-block" id="add_user"><i class="typcn typcn-user-add-outline"></i> Add user</button></div>
+                <div class="col-sm-5 col-md-2 mg-t-10 mg-sm-t-0"><button class="btn btn-primary btn-with-icon btn-block" id="role_user"><i class="typcn typcn-flow-children"></i> Roles</button></div>
+                <div class="col-sm-6 col-md-4 mg-t-10 mg-md-t-0"><button class="btn btn-success btn-with-icon btn-block" id="permission_user"><i class="typcn typcn-edit"></i> Permission Menu</button></div>
+              </div>
+            </div>
+          </div>
+
+
+          <div>
+            <table id="tb_user" class="table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Name</th>
+                  <th>HP</th>
+                  <th class="th-action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                @each(user in users)
+                <tr>
+                  <td>{{user.username}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.fullname}}</td>
+                  <td>{{user.hp}}</td>
+                    <td>
+                        <div>
+                            <a href="#" class="badge badge-success modal-effect" data-toggle="modal" data-target="#acedit" data-effect="effect-slide-in-right" data-id="{{user.id}}" onclick="userEdit(this)"><i class="typcn typcn-edit"></i> Edit</a>
+                            <a href="#" class="badge badge-warning modal-effect" data-toggle="modal" data-target="#acview" data-effect="effect-slide-in-right" data-id="{{user.id}}" onclick="userView(this);"><i class="typcn typcn-eye-outline"></i> View</a>
+                        <a href="#" class="badge badge-danger modal-effect" data-toggle="modal" data-target="#acdelete" data-effect="effect-slide-in-right" data-id="{{user.id}}" data-uname="{{user.username}}" onclick="userDelete(this);"><i class="typcn typcn-trash"></i> Delete</a>
+                        </div>
+                    </td>
+                  </tr>
+                @endeach
+
+              </tbody>
+            </table>
+          </div>
+
+          <!--EDIT AKUN-->
+          <div id="acedit" class="modal">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Account</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="POST" id="userformedit" enctype="multipart/form-data" data-parsley-validate>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                          {{--  pertama  --}}
+                          {{ csrfField() }}
+                          <input type="hidden" id="user_id" name="user_id" value=""/>
+                          <input type="hidden" id="avatar" name="avatar" value=""/>
+                          <select class="hidden" id="roles_e" name="roles_e[]" multiple>
+                              <option value=""></option>
+                          </select>
+
+                          <div class="wd-sm-300">
+                            <div class="d-md-flex mg-b-10">
+                                <div class="form-group mg-b-0">
+                                  <label class="form-label">Username: <span class="tx-danger">*</span></label>
+                                  <input type="text" name="username" id="username" class="form-control wd-300" placeholder="Enter username" value="{{old('username','')}}" required data-parsley-required>
+                                  {{ elIf('<span>$self</span>', getErrorFor('username'), hasErrorFor('username')) }}
+                              </div><!-- form-group -->
+                                <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                  <label class="form-label">Email: <span class="tx-danger">*</span></label>
+                                  <input type="email" name="email" id="email" class="form-control wd-300" placeholder="Enter email" value="{{ old('email', '') }}" required data-parsley-required data-parsley-type="email">
+                                  {{ elIf('<span>$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+                                </div><!-- form-group -->
+                                <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                    <label class="form-label">Password: <span class="tx-danger">*</span></label>
+                                    <input type="password" name="password" id="password" class="form-control wd-400" placeholder="Enter password" required data-parsley-required>
+                                    {{ elIf('<span>$self</span>', getErrorFor('password'), hasErrorFor('password')) }}
+                                  </div>
+                              </div><!-- d-flex -->
+                            </div>
+
+                              {{--  kedua  --}}
+                              <div class="wd-sm-300">
+                                <div class="d-md-flex mg-b-10">
+                                    <div class="form-group mg-b-0">
+                                        <label class="form-label">Fullname: </label>
+                                        <input type="text" name="fullname" id="fullname" class="form-control wd-300" placeholder="Enter fullname">
+                                    </div><!-- form-group -->
+                                    <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                        <label class="form-label">HP: </label>
+                                        <input type="number" name="hp" id="hp" class="form-control wd-300" placeholder="Enter number phone">
+                                    </div><!-- form-group -->
+                                    <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                        <label class="form-label">Address: </label>
+                                        <input type="text" name="addr" id="addr" class="form-control wd-400" placeholder="Enter address">
+                                    </div><!-- form-group -->
+                                </div><!-- d-flex -->
+                              </div>
+
+                              {{--  ketiga  --}}
+                              <div class="wd-sm-300">
+                                <div class="d-md-flex mg-b-20">
+                                    <div class="form-group mg-b-0">
+                                        <label class="form-label">Select Roles: </label>
+                                        <select id="roles" class="form-control wd-650" name="roles[]" placeholder="Enter Roles" multiple>
+                                            <option value="other">select roles</option>
+                                        </select>
+                                    </div><!-- form-group -->
+                                    <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                      <label class="form-label">Upload image: </label>
+                                      <input type="file" class="btn btn-light wd-350" name="filex" id="filex">
+                                  </div><!-- form-group -->
+                                </div>
+                              </div>
+
+                              <button type="submit" id="save-data" class="btn btn-success pd-x-50" onsubmit="updateData();">Save</button>
+                              <a href="/admin" class="btn btn-warning pd-x-50" >Back</a>
+
+                    </div>
+                  </div>
+
+                </div> <!--end modal body-->
+                <!--  <div class="modal-footer">
+                  <button type="submit" class="btn btn-indigo">Save</button>
+                  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                </div>  -->
+              </form> <!--end form-->
+
+              </div>
+            </div><!-- modal-dialog -->
+          </div><!-- modal -->
+
+          <!--VIEW AKUN-->
+          <div id="acview" class="modal">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title">Preview Account</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                      <div class="col-sm-9">
+                          <table class="table no-footer dtr-inline">
+                              <tr>
+                                <td><b>Name</b></td>
+                                <td>: <span id="v_fname"></span></td>
+                                <td><b>Username</b></td>
+                                <td>: <span id="v_uname"></span></td>
+                              </tr>
+                              <tr>
+                                <td><b>HP</b></td>
+                                <td>: <span id="v_hp"></span></td>
+                                <td><b>Email</b></td>
+                                <td>: <span id="v_email"></span></td>
+                              </tr>
+                              <tr>
+                                <td><b>Address</b></td>
+                                <td colspan="3">: <span id="v_addr"></span></td>
+                              </tr>
+                             <!-- <tr>
+                                  <td><b>Latitude</b></td>
+                                  <td>: <span id="v_lat"></span> </td>
+                                  <td><b>Longitude</b></td>
+                                  <td>: <span id="v_long"></span></td>
+                              </tr> -->
+                          </table>
+                      </div>
+                      <div class="col-sm-3">
+                          <img src="img/cocode.png" alt="avatar" height="155px" width="160px" id="v_avatar">
+                      </div>
+                  </div>
+                  <!--<hr style="border: 1px dashed black;"> -->
+                  <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table no-footer dtr-inline">
+                          <tr>
+                            <td width="110px"><b>Role</b></td>
+                            <td>:
+                              <span id="tb_role"></span>
+                            </td>
+                          </tr>
+                          <!--
+                          <tr>
+                            <td width="110px"><b>Permission</b></td>
+                            <td>:
+                              <span id="tb_permission"></span>
+                            </td>
+                          </tr>
+                          -->
+                        </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div><!-- modal-dialog -->
+          </div><!-- modal -->
+
+          <!--DELETE AKUN-->
+          <div id="acdelete" class="modal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content tx-size-sm">
+                <div class="modal-body tx-center pd-y-20 pd-x-20">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <i class="icon icon ion-ios-close-circle-outline tx-100 tx-danger lh-1 mg-t-20 d-inline-block"></i>
+                  <h5 class="tx-danger mg-b-20">Are you sure for delete user <span id="del_user"></span> ?</h5>
+                  {{--  <p class="mg-b-20 mg-x-20">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>  --}}
+                  <form action="{{'admin/del-user?_method=delete'}}" method="post">
+                    {{ csrfField() }}
+                    <input type="hidden" id="del_id" name="id" value="">
+                    <input type="hidden" id="del_usename" name="uname" value="">
+                    <button type="submit" class="btn btn-danger pd-x-25" aria-label="Close">Continue</button>
+                  </form>
+                </div><!-- modal-body -->
+              </div><!-- modal-content -->
+            </div><!-- modal-dialog -->
+          </div><!-- modal -->
+
+
+        </div>
+      </div><!-- card -->
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+
+  <script>
+
+    var xhr = null;
+    function userView(me) {
+
+        if (xhr != undefined && xhr != null) {
+            xhr.abort();
+        }
+
+        var id = $(me).data("id");
+
+        xhr = $.ajax({
+            url:'admin/userview/userid/'+id,
+            method:'GET',
+            cache: false,
+            dataType:'JSON',
+            data:{id},
+            beforeSend:function(data){
+                // console.log("before send :"+ data);
+            },
+            complete:function(result){
+                // console.log("Complete :" + result);
+            },
+            success:function(data){
+
+              //  bagian user
+                $("#v_fname").html(data.data.user[0].fullname);
+                $("#v_uname").html(data.data.user[0].username);
+                $("#v_hp").html(data.data.user[0].hp);
+                $("#v_email").html(data.data.user[0].email);
+                $("#v_addr").html(data.data.user[0].address);
+                $("#v_addr").html(data.data.user[0].address);
+                $("#v_lat").html(data.data.user[0].lat);
+                $("#v_long").html(data.data.user[0].long);
+
+                if(data.data.user[0].avatar != null || data.data.user[0].avatar != undefined){
+                   $("#v_avatar").attr("src","img/avatar/"+data.data.user[0].avatar);
+                }else{
+                   $("#v_avatar").attr("src","img/cocode.png");
+                }
+
+                var badge = {
+                       0: 'badge-primary',
+                       1: 'badge-secondary',
+                       2: 'badge-success',
+                       3: 'badge-danger',
+                       4: 'badge-warning',
+                       5: 'badge-info',
+                       6: 'badge-light',
+                       7: 'badge-dark'
+                 }
+
+
+                 var permission = "";
+                 var role = "";
+
+                $.each(data.data.roles, function(i, value){
+                   if (value.roles != null) {
+                      role += '<span class="badge badge-m badge-pill '+badge[Math.floor(Math.random() * 7)]+'">'+value.roles+'</span> ';
+                   }
+                });
+                $("#tb_role").html(role);
+
+
+                // $.each(data.data.permission, function(i, value){
+                //     if (value.permission != null) {
+                //       permission += '<span class="badge badge-m '+badge[Math.floor(Math.random() * 7)]+'">'+value.permission+'</span> ';
+                //     }else{
+                //       $.each(data.data.role_permission, function(i, valuex){
+                //           if (valuex.permission != null) {
+                //             permission += '<span class="badge badge-m '+badge[Math.floor(Math.random() * 7)]+'">'+valuex.permission+'</span> ';
+                //           }
+                //       });
+                //     }
+                // });
+                // $("#tb_permission").html(permission);
+
+
+            },
+            error:function(){
+                alert("Uppsss....something wrong!.");
+            }
+        });
+
+    }
+
+    var xhr2 = null;
+    function userEdit(me) {
+
+      if (xhr2 != undefined && xhr2 != null) {
+            xhr2.abort();
+        }
+
+        var id = $(me).data("id");
+
+        xhr2 = $.ajax({
+            url:'admin/userview/userid/'+id,
+            method:'GET',
+            cache: false,
+            dataType:'JSON',
+            data:{id},
+            beforeSend:function(data){
+                // console.log("before send :"+ data);
+            },
+            complete:function(result){
+                // console.log("Complete :" + result);
+            },
+            success:function(data){
+              var user = data.data.user[0];
+              var roles = data.data.roles;
+
+              console.log(data);
+
+              $("#user_id").val(user.id)
+              $("#username").val(user.username);
+              $("#email").val(user.email);
+              $("#fullname").val(user.fullname);
+              $("#hp").val(user.hp);
+              $("#addr").val(user.address);
+              $("#avatar").val(user.avatar);
+              
+                $.ajax({
+                  url:'admin/getroles',
+                  method:'GET',
+                  cache: false,
+                  dataType:'JSON',
+                  data:{id},
+                  success:function(data){
+                      // console.log(data);
+
+                      var html = "";
+                      var role_e = "";                   
+                      var arr = [];
+                     
+                      $.each(roles, function(ix, valuex){
+
+                          role_e += "<option value='"+valuex.roles_id+"' selected>"+valuex.roles+"</option>";                   
+                          arr.push()
+                      });
+                      // console.log(arr);
+                      
+                      $.each(data, function(iy, valuey){
+                          if(arr.indexOf(valuey.id) != -1){
+                            html += "<option value='"+valuey.id+"' selected>"+valuey.name+"</option>";  
+                          } else {
+                            html += "<option value='"+valuey.id+"'>"+valuey.name+"</option>";
+                          }
+                          // console.log(valuey.id +" => "+arr.indexOf(valuey.id));
+                      }); 
+
+
+                      $("#roles").html(html);
+                      $("#roles_e").html(role_e);
+                      
+                      
+                    }
+                  });
+
+            },
+            error:function(){
+                alert("Uppsss....something wrong!.");
+            }
+        });
+
+    }
+
+    var xhr3 = null;
+    function userDelete(me) {
+        var id = $(me).data('id');
+        var uname = $(me).data('uname');
+
+        if (xhr3 != undefined && xhr3 != null) {
+          xhr3.abort();
+        }
+
+        xhr3 = $.ajax({
+            url:'admin/userview/userid/'+id,
+            method:'GET',
+            cache: false,
+            dataType:'JSON',
+            data:{id},
+            beforeSend:function(data){
+                // console.log("before send :"+ data);
+            },
+            complete:function(result){
+                // console.log("Complete :" + result);
+            },
+            success:function(data){
+              // console.log(data.data.user[0].username);
+              $("#del_user").html(data.data.user[0].username);
+              $("#del_id").val(data.data.user[0].id);
+              $("#del_usename").val(data.data.user[0].username);
+
+            },
+            error:function(){
+                alert("Uppsss....something wrong!.");
+            }
+        });
+
+
+    }
+
+    var xhr4 = null;
+    function updateData(e){
+         
+      if (xhr4 != undefined && xhr4 != null) {
+            xhr4.abort();
+      }
+      
+      // e.preventDefault();
+
+      // $('#userformedit').parsley();
+
+
+      var formData = new FormData();
+      formData.append("filex", $('#filex')[0].files[0]); //append the image file
+       
+      var form_data = $("#userformedit").serialize();
+      
+       $.each(form_data, function (key, input) { //append other input value
+          formData.append(input.name, input.value);
+        });
+
+      // console.log(form_data);
+      
+       xhr4 = $.ajax({
+            url:'admin',
+            method:'POST',
+            cache: false,
+            // dataType:'JSON',
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            data:formData,
+            beforeSend:function(data){
+            },
+            complete:function(result){
+            },
+            success:function(data){
+            },
+            error:function(){
+                // alert("Uppsss....something wrong!.");
+            }
+        });
+  
+    }
+
+
+    jQuery(document).ready(function(){
+
+      $('#tb_user').DataTable({
+          responsive: true,
+          language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items',
+          }
+      });
+
+      $('#roles').select2({
+        dropdownParent: $('#acedit'),
+        allowClear : true,
+        placeholder: 'Select role'
+      });
+
+
+      $('.dataTables_length select').select2({minimumResultsForSearch: Infinity });
+
+       // modal effect active
+      $('.modal-effect').click(function (e) {
+          e.preventDefault();
+          var effect = $(this).attr('data-effect');
+          $('#acedit').addClass(effect);
+          $('#acview').addClass(effect);
+          $('#acdelete').addClass(effect);
+      });
+
+
+        // hide modal with effect
+      $('#acedit').on('hidden.bs.modal', function (e) {
+          $(this).removeClass (function (index, className) {
+              return (className.match (/(^|\s)effect-\S+/g) || []).join(' ');
+          });
+      });
+
+      $('#acview').on('hidden.bs.modal', function (e) {
+          $(this).removeClass (function (index, className) {
+              return (className.match (/(^|\s)effect-\S+/g) || []).join(' ');
+          });
+      });
+
+      $('#acdelete').on('hidden.bs.modal', function (e) {
+          $(this).removeClass (function (index, className) {
+              return (className.match (/(^|\s)effect-\S+/g) || []).join(' ');
+          });
+      });
+
+
+      $('#add_user').click(function(){
+          window.location.href ='admin/add-user';
+      });
+
+      $('#role_user').click(function(){
+          window.location.href ='admin/add-role';
+      });
+
+      $('#permission_user').click(function(){
+          window.location.href ='admin/add-permission';
+      });
+
+
+      var formData = $('#userformedit').serialize();
+
+      $.ajax({
+        url:'admin/getroles',
+        method:'GET',
+        cache: false,
+        dataType:'JSON',
+        data:{formData},
+        success:function(data){
+            // console.log(data);
+
+            var html = ""
+            $.each(data,function(key, value){
+                // console.log(value);
+              html += "<option value='"+value.id+"'>"+value.name+"</option>";
+            });
+            $("#roles").html(html);
+
+        }
+      });
+
+      
+      $('#userformedit').parsley();
+      $("#userformedit").submit(function(e){
+          updateData(e);
+          return false;
+      });
+
+
+
+    });
+  </script>
+
+@endsection

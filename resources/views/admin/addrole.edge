@@ -1,0 +1,143 @@
+@layout('master')
+
+@section('title')
+    <title>Administrator : Role for user</title>
+@endsection
+
+
+
+
+@section('content')
+
+<style>
+  .row-xs{
+    margin-right: -130px !important;
+  }
+  .th-action{
+    width: 150px !important;
+  }
+  .badge.badge-m{
+    font-size: 11px !important;
+  }
+
+  .hidden{
+    display: none;
+  }
+
+</style>
+
+
+<div class="col-lg-12 mg-t-20">
+  <div class="row row-sm">
+    <div class="col-sm-12">
+      <div class="card card-dashboard-twenty">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="az-content-label mg-b-5">Form Role</div>
+              <!--<p class="mg-b-20">Please fill all required form.</p> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <form method="POST" id="formRoles" data-parsley-validate>
+                    <div class="wd-sm-300">
+                        <div class="d-md-flex mg-b-10">
+                            <div class="form-group mg-b-0">
+                              <label class="form-label">Slug: <span class="tx-danger">*</span></label>
+                              <input type="text" name="slug" id="slug" class="form-control wd-250" placeholder="Enter slug" value="{{old('slug','')}}" required>
+                              {{ elIf('<span>$self</span>', getErrorFor('slug'), hasErrorFor('slug')) }}
+                            </div><!-- form-group -->
+                            <div class="form-group mg-b-20 mg-md-l-25 mg-t-20 mg-md-t-0">
+                              <label class="form-label">Name: <span class="tx-danger">*</span></label>
+                              <input type="name" name="name" id="name" class="form-control wd-250" placeholder="Enter name" value="{{ old('name', '') }}" required>
+                              {{ elIf('<span>$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+                            </div><!-- form-group -->
+                            <div class="form-group mg-b-20 mg-md-l-25 mg-t-20 mg-md-t-0">
+                                <label class="form-label">Description:</label>
+                                <input type="password" name="password" id="password" class="form-control wd-400" placeholder="Enter descriptions">
+                            </div>
+                            <div class="form-group mg-b-20 mg-md-l-10 mg-t-20 mg-md-t-0">
+                                <label class="form-label"></label><br>
+                                <button type="submit" id="saveRoles" class="form-control btn btn-success btn-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save roles"><i class="typcn typcn-download"></i></button>
+                            </div>
+                            <div class="form-group mg-b-20 mg-md-l-10 mg-t-20 mg-md-t-0">
+                              <label class="form-label"></label><br>
+                              <a href="/admin" class="btn btn-danger btn-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to admin"><i class="typcn typcn-backspace"></i></a>
+                            </div>
+                        </div><!-- d-flex -->
+                    </div>
+                </form>
+            </div>
+          </div>
+
+          <div>
+            <table id="tb_roles" class="table">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Slug</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th class="th-action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                
+                 
+                @each(role in roles)
+                <tr>
+                  <td>{{role.id}}</td>
+                  <td>{{role.slug}}</td>
+                  <td>{{role.name}}</td>
+                  <td>{{role.description}}</td>
+                    <td>
+                        <div>
+                            <a href="#" class="badge badge-success modal-effect" data-toggle="modal" data-target="#acedit" data-effect="effect-slide-in-right" data-id="{{user.id}}" onclick="userEdit(this)"><i class="typcn typcn-edit"></i> Edit</a>
+                            <a href="#" class="badge badge-warning modal-effect" data-toggle="modal" data-target="#acview" data-effect="effect-slide-in-right" data-id="{{user.id}}" onclick="userView(this);"><i class="typcn typcn-eye-outline"></i> View</a>
+                            <a href="#" class="badge badge-danger modal-effect" data-toggle="modal" data-target="#acdelete" data-effect="effect-slide-in-right" data-id="{{user.id}}" data-uname="{{user.username}}" onclick="userDelete(this);"><i class="typcn typcn-trash"></i> Delete</a>
+                        </div>
+                    </td>
+                  </tr>
+                @endeach
+                 
+
+              </tbody>
+            </table>
+          </div>
+
+
+
+        </div>
+      </div><!-- card -->
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+
+<script>
+
+
+  jQuery(document).ready(function(){
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('#tb_roles').DataTable({
+          responsive: true,
+          language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items',
+          }
+    });
+
+
+
+  });
+</script>
+
+
+
+@endsection

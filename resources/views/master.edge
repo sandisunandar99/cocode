@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Meta -->
+  <meta name="description" content="CO'Code Aplication Development">
+  <meta name="author" content="sandisunandar">
+
+    @section('title')
+        <title>Co'Code Project</title>
+    @endsection
+
+
+    @include('include/style')
+</head>
+  <body>
+    <div class="az-header">
+      <div class="container">
+          @include('include/header')
+       </div><!-- container -->
+    </div><!-- az-header -->
+
+
+    {{--  position content here !  --}}
+    <div class="az-content az-content-dashboard">
+        <div class="container">
+          <div class="az-content-body">
+
+            <div class="az-dashboard-one-title">
+              <div>
+                <h2 class="az-dashboard-title">Hi, welcome back!</h2>
+                <p class="az-dashboard-text">Have a nice day  {{ auth.user.username }} :-)</p>
+              </div>
+              <div class="az-content-header-right">
+                <div class="media">
+                  <div class="media-body">
+                    <label>Date Now</label><br>
+                    <h6><span id="tanggal"></span></h6>
+                  </div><!-- media-body -->
+                </div><!-- media -->
+                <div class="media">
+                  <div class="media-body">
+                    <label>Time Now</label><br>
+                    <h6><span id="waktu"></span></h6>
+                  </div><!-- media-body -->
+                </div><!-- media -->
+                <div class="media">
+                  <div class="media-body">
+                    <label>INFORMATION</label><br>
+                    <marquee behavior="scroll" direction="left" width="250px"><h6>untuk text info update informasi !!!!</h6></marquee>
+                  </div><!-- media-body -->
+                </div><!-- media -->
+              </div>
+            </div><!-- az-dashboard-one-title -->
+
+            @!section('content')
+
+          </div><!-- az-content-body -->
+        </div>
+    </div><!-- az-content -->
+
+
+    @include('include/footer')
+
+    @include('include/script')
+
+
+
+
+    <script>
+      function date_time(tanggal, waktu){
+        date = new Date;
+          year = date.getFullYear();
+          month = date.getMonth();
+          months = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+          d = date.getDate();
+          day = date.getDay();
+          days = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+          h = date.getHours();
+          if(h<10)
+          {
+                  h = "0"+h;
+          }
+          m = date.getMinutes();
+          if(m<10)
+          {
+                  m = "0"+m;
+          }
+          s = date.getSeconds();
+          if(s<10)
+          {
+                  s = "0"+s;
+          }
+          // result = ''+days[day]+' '+months[month]+' '+d+' '+year+' '+h+':'+m+':'+s;
+
+          tanggal = ''+months[month]+' '+d+', '+year;
+          waktu = ''+h+':'+m+':'+s;
+
+          // console.log(tanggal);
+          // console.log(waktu);
+
+          document.getElementById('waktu').innerHTML = waktu;
+          document.getElementById('tanggal').innerHTML = tanggal;
+
+          setTimeout(date_time, 1000);
+
+          return true;
+      }
+
+      window.onload = date_time(tanggal, waktu);
+
+
+      jQuery(document).ready(function(){
+
+          $.ajax({
+              method:"GET",
+              url:"/user-store",
+              dataType:"JSON",
+              cache: false,
+              success:function(data){
+                  // console.log(data);
+
+                  $("#user_uname").html(data.user_uname);
+
+                  if(data.user_avatar != null || data.user_avatar != undefined){
+                   $("#user_avatar").attr("src","/img/avatar/"+data.user_avatar);
+                   $("#user_avatar2").attr("src","/img/avatar/"+data.user_avatar);
+                }else{
+                   $("#user_avatar").attr("src","/img/cocode.png");
+                   $("#user_avatar2").attr("src","/img/cocode.png");
+                }
+
+                var badge = {
+                       0: 'badge-primary',
+                       1: 'badge-secondary',
+                       2: 'badge-success',
+                       3: 'badge-danger',
+                       4: 'badge-warning',
+                       5: 'badge-info',
+                       6: 'badge-light',
+                       7: 'badge-dark'
+                 }
+
+                var role = "";
+
+                $.each(data.user_roles, function(i, value){
+                   if (value != null) {
+                      role += '<span class="badge badge-m badge-pill '+badge[Math.floor(Math.random() * 7)]+'">'+value+'</span>';
+                   }
+                });
+                $("#user_roles").html(role);
+
+
+
+              }//end success function
+            });
+
+
+      });
+
+    </script>
+
+  </body>
+</html>

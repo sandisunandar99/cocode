@@ -1,0 +1,198 @@
+@layout('master')
+
+@section('title')
+    <title>Administrator : Add user</title>
+@endsection
+
+
+@section('content')
+
+
+@if(flashMessage('error'))
+  <div class="alert alert-danger mg-b-0" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <strong>Uppss!</strong> {{ flashMessage('error') }}
+  </div>
+@endif
+
+@if(flashMessage('success'))
+  <div class="alert alert-success mg-b-0" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+    <strong>Ok!</strong> {{ flashMessage('success') }}
+  </div>
+@endif
+
+
+
+<div class="col-lg-12 mg-t-20">
+  <div class="row row-sm">
+    <div class="col-sm-12">
+      <div class="card card-dashboard-twenty">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="az-content-label mg-b-5">Form User</div>
+              {{--  <p class="mg-b-20">Please fill this form.</p>  --}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+                <form method="POST" id="userform" enctype="multipart/form-data" data-parsley-validate>
+                  {{--  pertama  --}}
+                  {{ csrfField() }}
+                  <div class="wd-sm-300">
+                    <div class="d-md-flex mg-b-10">
+                        <div class="form-group mg-b-0">
+                          <label class="form-label">Username: <span class="tx-danger">*</span></label>
+                          <input type="text" name="username" id="username" class="form-control wd-300" placeholder="Enter username" value="{{old('username','')}}" required>
+                          {{ elIf('<span>$self</span>', getErrorFor('username'), hasErrorFor('username')) }}
+                      </div><!-- form-group -->
+                        <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                          <label class="form-label">Email: <span class="tx-danger">*</span></label>
+                          <input type="email" name="email" id="email" class="form-control wd-300" placeholder="Enter email" value="{{ old('email', '') }}" required>
+                          {{ elIf('<span>$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+                        </div><!-- form-group -->
+                        <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                            <label class="form-label">Password: <span class="tx-danger">*</span></label>
+                            <input type="password" name="password" id="password" class="form-control wd-400" placeholder="Enter password" required>
+                            {{ elIf('<span>$self</span>', getErrorFor('password'), hasErrorFor('password')) }}
+                          </div>
+                      </div><!-- d-flex -->
+                    </div>
+
+                      {{--  kedua  --}}
+                      <div class="wd-sm-300">
+                        <div class="d-md-flex mg-b-10">
+                            <div class="form-group mg-b-0">
+                                <label class="form-label">Fullname: </label>
+                                <input type="text" name="fullname" id="fullname" class="form-control wd-300" placeholder="Enter fullname">
+                            </div><!-- form-group -->
+                            <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                <label class="form-label">HP: </label>
+                                <input type="number" name="hp" id="hp" class="form-control wd-300" placeholder="Enter number phone">
+                            </div><!-- form-group -->
+                            <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                                <label class="form-label">Address: </label>
+                                <input type="text" name="addr" id="addr" class="form-control wd-400" placeholder="Enter address">
+                            </div><!-- form-group -->
+                        </div><!-- d-flex -->
+                      </div>
+
+                      {{--  ketiga  --}}
+                      <div class="wd-sm-300">
+                        <div class="d-md-flex mg-b-20">
+                            <div class="form-group mg-b-0">
+                                <label class="form-label">Select Roles: </label>
+                                <select id="roles" class="form-control wd-650 select-role select2me" name="roles[]" multiple="multiple" placeholder="Enter Roles" >
+                                    <option value="other">select roles</option>
+                                </select>
+                            </div><!-- form-group -->
+                            <div class="form-group mg-b-0 mg-md-l-20 mg-t-20 mg-md-t-0">
+                              <label class="form-label">Upload image: </label>
+                              <input type="file" class="btn btn-light wd-350" name="files" id="files">
+                          </div><!-- form-group -->
+                        </div>
+                      </div>
+
+                      <button type="submit" id="save-data" class="btn btn-success pd-x-50" onsubmit="submitForm();">Save</button>
+                      <a href="/admin" class="btn btn-warning pd-x-50" >Back</a>
+
+                  </form>
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div><!-- card -->
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+
+
+<script>
+
+  var xhr = null;
+  function submitForm(){
+    if (xhr != undefined && xhr != null) {
+            xhr.abort();
+    }
+
+    var formData  = $("#userform").serialize();
+    console.log(formData);
+
+    xhr = $.ajax({
+            url:'add-user',
+            method:'POST',
+            cache: false,
+            dataType:'JSON',
+            data:formData,
+            beforeSend:function(data){
+                // console.log("before send :"+ data);
+            },
+            complete:function(result){
+                // console.log("Complete :" + result);
+            },
+            success:function(data){
+                console.log(data);
+
+            },
+            error:function(){
+                alert("Uppsss....something wrong!.");
+            }
+        });
+
+
+
+  }//end function
+
+
+
+
+jQuery(document).ready(function(){
+
+  var formData  = $("#userform").serialize();
+
+  $("#roles").select2({
+        allowClear : true,
+        placeholder: 'Select role'
+  });
+
+
+  $.ajax({
+    url:'getroles',
+    method:'GET',
+    cache: false,
+    dataType:'JSON',
+    data:{formData},
+    success:function(data){
+        // console.log(data);
+
+        var html = ""
+        $.each(data,function(key, value){
+            // console.log(value);
+          html += "<option value='"+value.id+"'>"+value.name+"</option>";
+        });
+        $("#roles").html(html);
+
+    }
+  });
+
+
+
+});//end jquery
+
+</script>
+
+
+
+@endsection
