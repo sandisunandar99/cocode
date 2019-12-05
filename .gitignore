@@ -17,3 +17,6 @@ database/development.sqlite
 .history
 .idea
 
+
+#ignore sql backup 
+/sql_backup
