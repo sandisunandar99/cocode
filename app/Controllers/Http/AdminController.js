@@ -25,12 +25,22 @@ class AdminController {
       return view.render('admin.adduser');
     }
 
+    /**
+     * 
+     * TODO: add role belum 
+     * FIXME:
+     */
     async addrole({view}){
       const getRole = await Roles.all()
       
       return view.render('admin.addrole', {roles: getRole.rows});
     }
 
+    /**
+     * 
+     * TODO: add permission belum
+     * FIXME:
+     */
     async addpermission({view}){
       const getPermission = await Permission.all()
 
