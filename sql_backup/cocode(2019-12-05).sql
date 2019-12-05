@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 28, 2019 at 01:06 AM
--- Server version: 5.7.27
+-- Generation Time: Dec 05, 2019 at 02:48 AM
+-- Server version: 8.0.1-dmr
 -- PHP Version: 7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -174,7 +174,9 @@ INSERT INTO `role_user` (`id`, `role_id`, `user_id`, `created_at`, `updated_at`)
 (1, 1, 1, NULL, NULL),
 (5, 3, 1, NULL, NULL),
 (10, 2, 8, NULL, NULL),
-(16, 2, 11, NULL, NULL);
+(16, 2, 11, NULL, NULL),
+(18, 2, 12, NULL, NULL),
+(19, 3, 12, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -204,7 +206,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `created_at`, `updated_at`, `username`, `email`, `password`, `fullname`, `hp`, `address`, `lat`, `long`, `avatar`) VALUES
 (1, '2019-05-14 15:07:55', '2019-05-14 15:07:55', 'admin', 'sandisunandar99@gmail.com', '$2a$10$iXcsB08gyvF1oc20WPn5ReTr51uZh5ZsduZUhCR1PxoFCKp3fmcEu', NULL, NULL, NULL, NULL, NULL, 'cocode.png'),
 (8, '2019-08-27 11:41:41', '2019-08-27 11:41:41', 'sandi1', 'sandi1@sandi.com', '$2a$10$.eqzpAbGxk0fDNOLg4syzO2JTAOgex2.rNr.gBqp6HDwjUdOFvIM6', 'sandi1', '09898787', 'jl. abjabdjahda', NULL, NULL, 'sandi1.png'),
-(11, '2019-10-25 17:14:33', '2019-10-27 20:49:10', 'dadang', 'dadang@dut.com', '$2a$10$vhaZF1/hC4pAqby01ZwIE.lh2hfobjU669Pmry/oQeoj.NBEJzp1.', 'dadang ', '0809808', 'jl. sukamenak', NULL, NULL, NULL);
+(11, '2019-10-25 17:14:33', '2019-10-27 20:49:10', 'dadang', 'dadang@dut.com', '$2a$10$vhaZF1/hC4pAqby01ZwIE.lh2hfobjU669Pmry/oQeoj.NBEJzp1.', 'dadang ', '0809808', 'jl. sukamenak', NULL, NULL, NULL),
+(12, '2019-11-26 13:47:01', '2019-11-26 14:12:46', 'users', 'user@test.com', '$2a$10$QU4s/OgcPMqGCgCfnSYeieus6zT3CA8haeh6y294PEzHyDPo0F.mm', 'test 123', '098980', 'test', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -382,13 +385,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `role_user`
 --
 ALTER TABLE `role_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
