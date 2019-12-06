@@ -20,3 +20,5 @@ database/development.sqlite
 
 #ignore sql backup 
 /sql_backup
+/data
+.node_repl_history
