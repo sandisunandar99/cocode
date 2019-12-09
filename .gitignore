@@ -22,3 +22,5 @@ database/development.sqlite
 /sql_backup
 /data
 .node_repl_history
+
+public/img/avatar/
