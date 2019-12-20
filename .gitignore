@@ -24,3 +24,21 @@ database/development.sqlite
 .node_repl_history
 
 public/img/avatar/
+
+.pm2-dev/logs/server-error.log
+
+.pm2-dev/logs/server-out.log
+
+.pm2-dev/module_conf.json
+
+.pm2-dev/pids/server-0.pid
+
+.pm2-dev/pm2.log
+
+.pm2-dev/pm2.pid
+
+.pm2-dev/touch
+
+.pm2/module_conf.json
+
+.pm2/touch
