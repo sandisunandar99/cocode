@@ -4,6 +4,9 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const User = use('App/Models/User')
+const Role = use('Adonis/Acl/Role')
+const Permission= use('Adonis/Acl/Permission')
+const Adm= use('App/Models/Admin')
 
 class Admin {
   /**
@@ -18,15 +21,14 @@ class Admin {
     const users = await User.find(id)
     const roles = await users.getRoles()
 
-    // console.log(roles.indexOf('administrator'));
-
-    if (roles.indexOf('administrator') != -1) {
-      // jika admin maka bisa masuk ke menu2 admin
+    const behaviors = ["administrator", "moderator"]
+    
+    if (behaviors.includes(roles.toString())) {
+      await next()
     } else {
-      return response.redirect('403', 403)
+      return response.redirect('/403', 403)
     }
-
-    await next()
+        
   }
 }
 
