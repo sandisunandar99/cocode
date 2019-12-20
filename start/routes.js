@@ -56,7 +56,6 @@ Route.group(() => {
 *UNUTK ROLE ADMIN
 */
 Route.group(() => {
-  // VIEW
   Route.get('admin','AdminController.index')
   Route.post('admin','AdminController.updateUser')
   
@@ -67,17 +66,18 @@ Route.group(() => {
   Route.get('admin/add-permission','AdminController.addpermission')
   Route.delete('admin/del-user', 'AdminController.userDelete')
 
-  // API
+// }).middleware(['login','is:(administrator or moderator)']) 
+}).middleware(['login','admin']) 
+
+
+
+
+/**
+ * API 
+ */
+Route.group(() => {
+
   Route.get('admin/userview/userid/:id','AdminController.UserView')
   Route.get('admin/getroles','AdminController.getRoles')
 
-
-}).middleware(['login','admin'])
-
-
-
-
-
-// Route.get('tasks', 'TaskController.index')
-// Route.post('tasks', 'TaskController.store')
-// Route.delete('tasks/:id', 'TaskController.destroy')
+}).middleware(['login'])

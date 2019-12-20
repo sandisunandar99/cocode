@@ -39,6 +39,10 @@
               <!--<p class="mg-b-20">Please fill all required form.</p> -->
             </div>
           </div>
+         
+         
+          @loggedIn
+            @is('administrator')
           <div class="row">
             <div class="col-sm-12">
                 <form method="POST" id="formRoles" data-parsley-validate>
@@ -71,6 +75,9 @@
                 </form>
             </div>
           </div>
+            @endis
+          @endloggedIn
+
 
           <div>
             <table id="tb_roles" class="table">

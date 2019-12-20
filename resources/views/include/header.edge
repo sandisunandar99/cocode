@@ -118,7 +118,7 @@
       <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
       <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>-->
       @loggedIn
-        @is('administrator')
+        @is('administrator || moderator') 
            <a href="/admin" class="dropdown-item"><i class="typcn typcn-cog-outline"></i>Administrator</a>
         @endis
      @endloggedIn
