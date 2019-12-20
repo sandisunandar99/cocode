@@ -16,7 +16,6 @@ class AdminController {
 
     async index({view}){
        const users = await User.all()
-      // console.log(users.rows[1].email);
        return view.render('admin.index',{users : users.rows})
     }
 
