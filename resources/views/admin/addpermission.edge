@@ -51,16 +51,16 @@
                               </div><!-- form-group -->
                               <div class="form-group mg-b-20 mg-md-l-25 mg-t-20 mg-md-t-0">
                                 <label class="form-label">Name: <span class="tx-danger">*</span></label>
-                                <input type="name" name="name" id="name" class="form-control wd-250" placeholder="Enter name" value="{{ old('name', '') }}" required>
+                                <input type="text" name="name" id="name" class="form-control wd-250" placeholder="Enter name" value="{{ old('name', '') }}" required>
                                 {{ elIf('<span>$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
                               </div><!-- form-group -->
                               <div class="form-group mg-b-20 mg-md-l-25 mg-t-20 mg-md-t-0">
                                   <label class="form-label">Description:</label>
-                                  <input type="password" name="password" id="password" class="form-control wd-400" placeholder="Enter descriptions">
+                                  <input type="text" name="desc" id="desc" class="form-control wd-400" placeholder="Enter descriptions">
                               </div>
                               <div class="form-group mg-b-20 mg-md-l-10 mg-t-20 mg-md-t-0">
                                 <label class="form-label"></label><br>
-                                <button type="submit" id="savePermission" class="form-control btn btn-success btn-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save roles"><i class="typcn typcn-download"></i></button>
+                                <a href="#" class="btn btn-success btn-icon" id="savePermission" data-toggle="tooltip" data-placement="top" title="" data-original-title="Save Permission"><i class="typcn typcn-download"></i></a>
                               </div>
                               <div class="form-group mg-b-20 mg-md-l-10 mg-t-20 mg-md-t-0">
                                 <label class="form-label"></label><br>
@@ -121,6 +121,9 @@
 
 
 <script>
+
+
+
   jQuery(document).ready(function(){
   
     $('[data-toggle="tooltip"]').tooltip();
